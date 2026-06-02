@@ -106,6 +106,9 @@ public class OrderService {
 		for (CartDetail cd : cartDetails) {
 			this.cartDetailRepository.deleteById(cd.getId());
 		}
+
+		// Gỡ liên kết User.cart trước khi xóa giỏ (tránh TransientPropertyValueException)
+		user.setCart(null);
 		this.cartRepository.deleteById(cart.getId());
 
 		if (session != null) {
