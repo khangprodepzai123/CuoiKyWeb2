@@ -1,5 +1,6 @@
 package NguyenQuocGiakhang.CuoiKyWeb2.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -102,6 +103,20 @@ public class CartService {
 			this.cartRepository.deleteById(currentCart.getId());
 			if (session != null) {
 				session.setAttribute("sum", 0);
+			}
+		}
+	}
+
+	public void handleUpdateCartBeforeCheckout(List<CartDetail> cartDetails) {
+		if (cartDetails == null) {
+			return;
+		}
+		for (CartDetail cartDetail : cartDetails) {
+			Optional<CartDetail> cdOptional = this.cartDetailRepository.findById(cartDetail.getId());
+			if (cdOptional.isPresent()) {
+				CartDetail currentCartDetail = cdOptional.get();
+				currentCartDetail.setQuantity(cartDetail.getQuantity());
+				this.cartDetailRepository.save(currentCartDetail);
 			}
 		}
 	}

@@ -82,14 +82,15 @@ public class HomePageController {
 
 	@GetMapping("/order-history")
 	public String getOrderHistoryPage(Model model, HttpServletRequest request) {
-		User currentUser = new User();
 		HttpSession session = request.getSession(false);
-		if (session != null && session.getAttribute("id") != null) {
-			long id = (long) session.getAttribute("id");
-			currentUser.setId(id);
-			List<Order> orders = this.orderService.fetchOrderByUser(currentUser);
-			model.addAttribute("orders", orders);
+		if (session == null || session.getAttribute("id") == null) {
+			return "redirect:/login";
 		}
+
+		User currentUser = new User();
+		currentUser.setId((long) session.getAttribute("id"));
+		List<Order> orders = this.orderService.fetchOrderByUser(currentUser);
+		model.addAttribute("orders", orders);
 		return "client/cart/order-history";
 	}
 }

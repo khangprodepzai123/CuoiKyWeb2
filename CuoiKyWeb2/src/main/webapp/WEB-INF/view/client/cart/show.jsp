@@ -22,10 +22,10 @@
         </c:when>
         <c:otherwise>
             <div class="table-responsive">
-                <table class="table table-striped align-middle">
+                <table class="table table-striped align-middle bg-white">
                     <thead>
                     <tr>
-                        <th>#</th>
+                        <th>Ảnh</th>
                         <th>Sản phẩm</th>
                         <th class="text-end">Đơn giá</th>
                         <th class="text-end">Số lượng</th>
@@ -36,9 +36,16 @@
                     <tbody>
                     <c:forEach var="cd" items="${cartDetails}">
                         <tr>
-                            <td>${cd.id}</td>
                             <td>
-                                <div class="fw-semibold">${cd.product.name}</div>
+                                <c:if test="${not empty cd.product.image}">
+                                    <img src="/images/product/${cd.product.image}" alt=""
+                                         style="width:64px;height:64px;object-fit:contain;" class="rounded" />
+                                </c:if>
+                            </td>
+                            <td>
+                                <a href="/product/${cd.product.id}" class="fw-semibold text-decoration-none">
+                                    ${cd.product.name}
+                                </a>
                                 <div class="text-muted small">${cd.product.factory} - ${cd.product.target}</div>
                             </td>
                             <td class="text-end">
@@ -61,17 +68,15 @@
             </div>
 
             <div class="d-flex justify-content-end">
-                <div class="card" style="min-width: 320px;">
+                <div class="card shadow-sm" style="min-width: 320px;">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between mb-3">
                             <span class="text-muted">Tổng tiền</span>
-                            <span class="fw-bold">
+                            <span class="fw-bold fs-5 text-primary">
                                 <fmt:formatNumber type="number" value="${totalPrice}" /> đ
                             </span>
                         </div>
-                        <div class="mt-3 small text-muted">
-                            (Checkout sẽ làm ở module Order/Checkout tiếp theo.)
-                        </div>
+                        <a href="/checkout" class="btn btn-primary w-100">Thanh toán</a>
                     </div>
                 </div>
             </div>
@@ -80,4 +85,3 @@
 </div>
 </body>
 </html>
-

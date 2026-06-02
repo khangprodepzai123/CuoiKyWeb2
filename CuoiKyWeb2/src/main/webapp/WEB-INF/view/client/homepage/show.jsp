@@ -52,6 +52,12 @@
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
                 <span class="text-muted small me-2">Xin chào, ${sessionScope.fullName}</span>
+                <a class="btn btn-outline-primary btn-sm" href="/cart">
+                    Giỏ hàng
+                    <c:if test="${sessionScope.sum != null && sessionScope.sum > 0}">
+                        <span class="badge bg-danger">${sessionScope.sum}</span>
+                    </c:if>
+                </a>
                 <a class="btn btn-outline-secondary btn-sm" href="/order-history">Đơn hàng</a>
                 <sec:authorize access="hasRole('ADMIN')">
                     <a class="btn btn-warning btn-sm" href="/admin">Admin</a>
@@ -81,22 +87,42 @@
                 <c:forEach var="product" items="${products}">
                     <div class="col-md-6 col-lg-4">
                         <div class="card product-card h-100">
-                            <div class="product-img">
-                                <c:choose>
-                                    <c:when test="${not empty product.image}">
-                                        <img src="/images/product/${product.image}" alt="${product.name}" />
-                                    </c:when>
-                                    <c:otherwise>
-                                        <i class="bi bi-laptop product-img-placeholder"></i>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">${product.name}</h5>
+                            <a href="/product/${product.id}" class="text-decoration-none text-dark">
+                                <div class="product-img">
+                                    <c:choose>
+                                        <c:when test="${not empty product.image}">
+                                            <img src="/images/product/${product.image}" alt="${product.name}" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <i class="bi bi-laptop product-img-placeholder"></i>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </a>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">
+                                    <a href="/product/${product.id}" class="text-decoration-none text-dark">
+                                        ${product.name}
+                                    </a>
+                                </h5>
                                 <p class="text-muted small mb-2">${product.shortDesc}</p>
-                                <p class="fw-bold text-primary mb-0">
+                                <p class="fw-bold text-primary mb-3">
                                     <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
                                 </p>
+                                <div class="mt-auto d-flex gap-2">
+                                    <a href="/product/${product.id}" class="btn btn-outline-primary btn-sm flex-grow-1">
+                                        Chi tiết
+                                    </a>
+                                    <sec:authorize access="isAuthenticated()">
+                                        <form action="/add-product-to-cart/${product.id}" method="post" class="flex-grow-1">
+                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                            <button type="submit" class="btn btn-primary btn-sm w-100">Thêm giỏ</button>
+                                        </form>
+                                    </sec:authorize>
+                                    <sec:authorize access="!isAuthenticated()">
+                                        <a href="/login" class="btn btn-primary btn-sm flex-grow-1">Mua ngay</a>
+                                    </sec:authorize>
+                                </div>
                             </div>
                         </div>
                     </div>

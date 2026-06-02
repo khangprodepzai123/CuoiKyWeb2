@@ -1,6 +1,7 @@
 package NguyenQuocGiakhang.CuoiKyWeb2.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -17,5 +18,9 @@ public class ProductService {
 
 	public List<Product> fetchProducts() {
 		return this.productRepository.findAll();
+	}
+
+	public Optional<Product> fetchProductById(long id) {
+		return this.productRepository.findById(id);
 	}
 }
