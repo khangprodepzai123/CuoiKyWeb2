@@ -23,10 +23,19 @@
         .product-card:hover { transform: translateY(-4px); }
         .product-img {
             height: 180px;
-            background: linear-gradient(145deg, #e9ecef, #dee2e6);
+            background: #f8f9fa;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+        }
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 0.5rem;
+        }
+        .product-img .product-img-placeholder {
             font-size: 3rem;
             color: #6c757d;
         }
@@ -73,7 +82,14 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="card product-card h-100">
                             <div class="product-img">
-                                <i class="bi bi-laptop"></i>
+                                <c:choose>
+                                    <c:when test="${not empty product.image}">
+                                        <img src="/images/product/${product.image}" alt="${product.name}" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        <i class="bi bi-laptop product-img-placeholder"></i>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title">${product.name}</h5>
