@@ -1,55 +1,80 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - CuoiKyWeb2</title>
-    <link href="/css/styles.css" rel="stylesheet" />
-</head>
-<body class="bg-light">
-<nav class="navbar navbar-dark bg-dark mb-4">
-    <div class="container">
-        <span class="navbar-brand">CuoiKyWeb2 Admin</span>
-        <div>
-            <a href="/" class="btn btn-sm btn-outline-light me-2">Trang chủ</a>
-            <form action="/logout" method="post" class="d-inline">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                <button class="btn btn-sm btn-danger">Đăng xuất</button>
-            </form>
-        </div>
-    </div>
-</nav>
-<div class="container">
-    <h2 class="mb-4">Dashboard</h2>
-    <div class="row g-3">
-        <div class="col-md-4">
-            <div class="card border-primary">
-                <div class="card-body">
-                    <h5 class="card-title">Người dùng</h5>
-                    <p class="display-6">${countUsers}</p>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+            <meta charset="utf-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+            <meta name="description" content="CuoiKyWeb2 - Dự án CuoiKyWeb2" />
+            <meta name="author" content="CuoiKyWeb2" />
+            <title>Dashboard - CuoiKyWeb2</title>
+            <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+            <link href="css/styles.css" rel="stylesheet" />
+            <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        </head>
+
+        <body class="sb-nav-fixed">
+            <jsp:include page="../layout/header.jsp" />
+            <div id="layoutSidenav">
+                <jsp:include page="../layout/sidebar.jsp" />
+                <div id="layoutSidenav_content">
+                    <main>
+                        <div class="container-fluid px-4">
+                            <h1 class="mt-4">Dashboard</h1>
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item active">Thống kê</li>
+                            </ol>
+                            <div class="row">
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="card bg-primary text-white mb-4">
+                                        <div class="card-body">Số lượng User (${countUsers})</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="small text-white stretched-link" href="/admin/user">View
+                                                Details</a>
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="card bg-danger text-white mb-4">
+                                        <div class="card-body">Số lượng Product (${countProducts})</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="small text-white stretched-link" href="/admin/product">View
+                                                Details</a>
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="card bg-success text-white mb-4">
+                                        <div class="card-body">Số lượng Order (${countOrders})</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="small text-white stretched-link" href="/admin/order">View
+                                                Details</a>
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </main>
+                    <jsp:include page="../layout/footer.jsp" />
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card border-success">
-                <div class="card-body">
-                    <h5 class="card-title">Sản phẩm</h5>
-                    <p class="display-6">${countProducts}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card border-warning">
-                <div class="card-body">
-                    <h5 class="card-title">Đơn hàng</h5>
-                    <p class="display-6">${countOrders}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+                crossorigin="anonymous"></script>
+            <script src="js/scripts.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
+                crossorigin="anonymous"></script>
+            <script src="js/chart-area-demo.js"></script>
+            <script src="js/chart-bar-demo.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+                crossorigin="anonymous"></script>
+            <script src="js/datatables-simple-demo.js"></script>
+        </body>
+
+        </html>

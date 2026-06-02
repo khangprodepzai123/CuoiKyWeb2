@@ -23,4 +23,12 @@ public class ProductService {
 	public Optional<Product> fetchProductById(long id) {
 		return this.productRepository.findById(id);
 	}
+
+	public Product createProduct(Product product) {
+		return this.productRepository.save(product);
+	}
+
+	public void deleteProduct(long id) {
+		this.productRepository.deleteById(id);
+	}
 }

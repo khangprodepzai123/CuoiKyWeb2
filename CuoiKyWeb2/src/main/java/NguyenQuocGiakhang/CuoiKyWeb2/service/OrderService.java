@@ -1,6 +1,7 @@
 package NguyenQuocGiakhang.CuoiKyWeb2.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +48,37 @@ public class OrderService {
 			return List.of();
 		}
 		return this.orderRepository.findByUserIdWithDetails(user.getId());
+	}
+
+	public List<Order> fetchAllOrders() {
+		return this.orderRepository.findAllWithUser();
+	}
+
+	public Optional<Order> fetchOrderById(long id) {
+		return this.orderRepository.findByIdWithDetails(id);
+	}
+
+	public void deleteOrderById(long id) {
+		Optional<Order> orderOptional = this.fetchOrderById(id);
+		if (orderOptional.isPresent()) {
+			Order order = orderOptional.get();
+			List<OrderDetail> orderDetails = order.getOrderDetails();
+			if (orderDetails != null) {
+				for (OrderDetail orderDetail : orderDetails) {
+					this.orderDetailRepository.deleteById(orderDetail.getId());
+				}
+			}
+		}
+		this.orderRepository.deleteById(id);
+	}
+
+	public void updateOrder(Order order) {
+		Optional<Order> orderOptional = this.orderRepository.findById(order.getId());
+		if (orderOptional.isPresent()) {
+			Order currentOrder = orderOptional.get();
+			currentOrder.setStatus(order.getStatus());
+			this.orderRepository.save(currentOrder);
+		}
 	}
 
 	@Transactional
