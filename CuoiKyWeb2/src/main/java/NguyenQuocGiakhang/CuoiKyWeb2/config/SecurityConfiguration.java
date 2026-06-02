@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
 
 import NguyenQuocGiakhang.CuoiKyWeb2.service.CustomUserDetailsService;
@@ -35,16 +34,10 @@ public class SecurityConfiguration {
     public DaoAuthenticationProvider authProvider(
             PasswordEncoder passwordEncoder,
             UserDetailsService userDetailsService) {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
         // authProvider.setHideUserNotFoundExceptions(false);
         return authProvider;
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler customSuccessHandler() {
-        return new CustomSuccessHandler();
     }
 
     @Bean
@@ -57,15 +50,19 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // v6. lamda
+    SecurityFilterChain filterChain(
+            HttpSecurity http,
+            DaoAuthenticationProvider authProvider,
+            CustomSuccessHandler customSuccessHandler,
+            SpringSessionRememberMeServices rememberMeServices) throws Exception {
         http
+                .authenticationProvider(authProvider)
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(DispatcherType.FORWARD,
                                 DispatcherType.INCLUDE)
                         .permitAll()
 
-                        .requestMatchers("/", "/login", "/product/**",
+                        .requestMatchers("/", "/login", "/register", "/access-deny", "/product/**",
                                 "/client/**", "/css/**", "/js/**", "/images/**")
                         .permitAll()
 
@@ -81,11 +78,11 @@ public class SecurityConfiguration {
 
                 .logout(logout -> logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
 
-                .rememberMe(r -> r.rememberMeServices(rememberMeServices()))
+                .rememberMe(r -> r.rememberMeServices(rememberMeServices))
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .failureUrl("/login?error")
-                        .successHandler(customSuccessHandler())
+                        .successHandler(customSuccessHandler)
                         .permitAll())
                 .exceptionHandling(ex -> ex.accessDeniedPage("/access-deny"));
 

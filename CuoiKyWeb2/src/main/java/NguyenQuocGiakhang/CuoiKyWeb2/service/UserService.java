@@ -2,7 +2,7 @@ package NguyenQuocGiakhang.CuoiKyWeb2.service;
 
 import java.util.List;
 
-import javax.management.relation.Role;
+import NguyenQuocGiakhang.CuoiKyWeb2.domain.Role;
 
 import org.springframework.stereotype.Service;
 

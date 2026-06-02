@@ -18,6 +18,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Component;
+
+@Component
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
